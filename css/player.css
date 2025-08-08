@@ -1,0 +1,426 @@
+/* STREAMFLIX - ESTILOS DO PLAYER */
+/* ================================ */
+
+/* Player Modal */
+.player-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 2000;
+    display: none;
+    flex-direction: column;
+}
+
+.player-header {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.player-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: white;
+    flex: 1;
+}
+
+.player-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.control-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.control-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.control-btn:active {
+    transform: translateY(0);
+}
+
+/* Video Container */
+.video-container {
+    flex: 1;
+    position: relative;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#videoPlayer {
+    width: 100%;
+    height: 100%;
+    background: #000;
+}
+
+#videoPlayer:focus {
+    outline: none;
+}
+
+/* Episode Info */
+.episode-info {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    max-width: 400px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+#episodeTitle {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #fff;
+}
+
+#episodeDescription {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.4;
+    margin-bottom: 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+#nextEpisodeTimer {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#nextEpisodeTimer button {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 6px 12px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s ease;
+}
+
+#nextEpisodeTimer button:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Player Loading States */
+.player-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    color: white;
+}
+
+.player-loading .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s linear infinite;
+}
+
+/* Player Controls Overlay */
+.player-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.video-container:hover .player-overlay {
+    opacity: 1;
+}
+
+.play-pause-btn {
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    font-size: 24px;
+    color: white;
+    pointer-events: auto;
+}
+
+.play-pause-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+/* Volume Control */
+.volume-control {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px 15px;
+    border-radius: 25px;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.video-container:hover .volume-control {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.volume-icon {
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.volume-slider {
+    width: 80px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.volume-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
+/* Progress Bar */
+.progress-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.video-container:hover .progress-container {
+    opacity: 1;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b6b, #ee5a52);
+    border-radius: 3px;
+    transition: width 0.1s ease;
+    position: relative;
+}
+
+.progress-bar::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Keyboard Shortcuts Help */
+.shortcuts-help {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    color: white;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.shortcuts-help.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.shortcuts-help h4 {
+    margin-bottom: 8px;
+    color: #ff6b6b;
+}
+
+.shortcuts-help div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+    gap: 20px;
+}
+
+.shortcuts-help kbd {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+/* Error State */
+.player-error {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+}
+
+.player-error .error-icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+    color: #ff6b6b;
+}
+
+.player-error h3 {
+    margin-bottom: 5px;
+    color: #ff6b6b;
+}
+
+.player-error p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+}
+
+/* Fullscreen Styles */
+.video-container:-webkit-full-screen {
+    background: #000;
+}
+
+.video-container:-moz-full-screen {
+    background: #000;
+}
+
+.video-container:fullscreen {
+    background: #000;
+}
+
+.video-container:fullscreen .episode-info {
+    bottom: 80px;
+}
+
+.video-container:fullscreen .player-overlay {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .player-header {
+        padding: 10px 15px;
+    }
+    
+    .player-title {
+        font-size: 16px;
+    }
+    
+    .control-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+    
+    .episode-info {
+        bottom: 15px;
+        left: 15px;
+        right: 15px;
+        max-width: none;
+        padding: 12px 15px;
+    }
+    
+    .volume-control {
+        top: 15px;
+        right: 15px;
+        padding: 8px 12px;
+    }
+    
+    .volume-slider {
+        width: 60px;
+    }
+    
+    .play-pause-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 20px;
+    }
+    
+    .shortcuts-help {
+        display: none; /* Esconder atalhos no mobile */
+    }
+}
