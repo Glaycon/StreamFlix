@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamFlix - IPTV Player</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/player.css">
+</head>
+<body>
+    <!-- Tela de Login -->
+    <div id="loginContainer" class="login-container">
+        <div class="login-card">
+            <div class="logo">🎬 StreamFlix</div>
+            <div class="login-subtitle">Acesse sua conta para continuar</div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Usuário</label>
+                    <input type="text" id="username" class="form-input" placeholder="Digite seu usuário" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" class="form-input" placeholder="Digite sua senha" required>
+                </div>
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="rememberLogin" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-text">Salvar login</span>
+                    </label>
+                </div>
+                <button type="submit" class="login-btn" id="loginButton">
+                    <span id="loginBtnText">Entrar</span>
+                    <div class="login-spinner" id="loginSpinner"></div>
+                </button>
+                <div id="errorMessage" class="error-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- App Principal -->
+    <div id="mainApp" class="main-app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-logo">🎬 StreamFlix</div>
+            <div class="header-controls">
+                <div class="user-info">
+                    <span>👤</span>
+                    <span id="currentUser"></span>
+                </div>
+                <button class="logout-btn" onclick="logout()">Sair</button>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="content-wrapper">
+            <!-- Canais -->
+            <section class="section" id="channelsSection">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span class="section-icon">📺</span>
+                        Canais ao Vivo
+                    </h2>
+                </div>
+
+                <!-- Categorias de Canais -->
+                <div class="category-tabs">
+                    <button class="category-tab active" onclick="filterChannels('all')">Todos</button>
+                    <button class="category-tab" onclick="filterChannels('favoritos')">⭐ Favoritos</button>
+                    <button class="category-tab" onclick="filterChannels('nacional')">Nacional</button>
+                    <button class="category-tab" onclick="filterChannels('internacional')">Internacional</button>
+                    <button class="category-tab" onclick="filterChannels('esportes')">Esportes</button>
+                    <button class="category-tab" onclick="filterChannels('filmes')">Filmes/Séries</button>
+                    <button class="category-tab" onclick="filterChannels('infantil')">Infantil</button>
+                    <button class="category-tab more-categories" onclick="toggleAllCategories()">
+                        <span id="moreCategoriesText">Ver Mais</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                </div>
+
+                <div id="allCategoriesContainer" class="all-categories" style="display: none;">
+                    <div class="category-grid">
+                        <button class="category-btn" onclick="filterChannels('noticias')">
+                            <span class="category-icon">📰</span>
+                            Notícias
+                        </button>
+                        <button class="category-btn" onclick="filterChannels('documentarios')">
+                            <span class="category-icon">🎓</span>
+                            Documentários
+                        </button>
+                        <button class="category-btn" onclick="filterChannels('musica')">
+                            <span class="category-icon">🎵</span>
+                            Música
+                        </button>
+                        <button class="category-btn" onclick="filterChannels('religioso')">
+                            <span class="category-icon">⛪</span>
+                            Religioso
+                        </button>
+                        <button class="category-btn" onclick="filterChannels('adulto')">
+                            <span class="category-icon">🔞</span>
+                            Adulto
+                        </button>
+                        <button class="category-btn" onclick="filterChannels('premium')">
+                            <span class="category-icon">💎</span>
+                            Premium
+                        </button>
+                    </div>
+                </div>
+
+                <div id="channelsGrid" class="channels-grid">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        Carregando canais...
+                    </div>
+                </div>
+            </section>
+
+            <!-- Filmes -->
+            <section class="section" id="moviesSection">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span class="section-icon">🎬</span>
+                        Filmes
+                    </h2>
+                </div>
+                <div id="moviesGrid" class="content-grid">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        Carregando filmes...
+                    </div>
+                </div>
+            </section>
+
+            <!-- Séries -->
+            <section class="section" id="seriesSection">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span class="section-icon">📺</span>
+                        Séries
+                    </h2>
+                </div>
+                <div id="seriesGrid" class="content-grid">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        Carregando séries...
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Player Modal -->
+    <div id="playerModal" class="player-modal">
+        <div class="player-header">
+            <div class="player-title" id="playerTitle">Reproduzindo...</div>
+            <div class="player-controls">
+                <button class="control-btn" onclick="toggleFullscreen()">⛶ Tela Cheia</button>
+                <button class="control-btn" onclick="closePlayer()">✕ Fechar</button>
+            </div>
+        </div>
+        <div class="video-container">
+            <video id="videoPlayer" controls autoplay>
+                Seu navegador não suporta reprodução de vídeo.
+            </video>
+            <div id="episodeInfo" class="episode-info" style="display: none;">
+                <div id="episodeTitle"></div>
+                <div id="episodeDescription"></div>
+                <div id="nextEpisodeTimer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/tmdb.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/channels.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
+
+<!-- 
+ARQUIVOS NECESSÁRIOS PARA O FUNCIONAMENTO COMPLETO:
+
+1. .env - Configurações do servidor
+2. css/style.css - Estilos principais
+3. css/login.css - Estilos da tela de login
+4. css/player.css - Estilos do player
+5. js/config.js - Configurações gerais
+6. js/auth.js - Sistema de autenticação
+7. js/tmdb.js - Integração com TMDB
+8. js/player.js - Funcionalidades do player
+9. js/channels.js - Gerenciamento de canais
+10. js/storage.js - Sistema de armazenamento
+11. js/app.js - App principal
+
+ESTRUTURA DE PASTAS RECOMENDADA:
+streamflix/
+├── .env
+├── index.html
+├── css/
+│   ├── style.css
+│   ├── login.css
+│   └── player.css
+├── js/
+│   ├── config.js
+│   ├── auth.js
+│   ├── tmdb.js
+│   ├── player.js
+│   ├── channels.js
+│   ├── storage.js
+│   └── app.js
+└── assets/
+    └── icons/
+-->
